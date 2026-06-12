@@ -134,28 +134,40 @@ export async function fetchGeminiResponse(charId, chatHistory, systemPrompt) {
     
     // Ruban specialized context-aware response matching
     if (charId === 'ruban') {
-      if (lastUserMsg.includes('sapteeya') || lastUserMsg.includes('sapteegala') || lastUserMsg.includes('food') || lastUserMsg.includes('sapdu') || lastUserMsg.includes('sapda') || lastUserMsg.includes('eat') || lastUserMsg.includes('dinner') || lastUserMsg.includes('lunch')) {
-        return "Nan filter coffee and light snack sapten chella. Nee sapteeya? Skip panna koodathu, sariya sapdanum da! ☕🍽️";
+      const containsAny = (str, keywords) => keywords.some(k => str.includes(k));
+
+      // Food / Drink
+      if (containsAny(lastUserMsg, ['sapt', 'sapd', 'sapth', 'sapu', 'food', 'eat', 'dinner', 'lunch', 'breakfast', 'coffee', 'tea', 'biscuit', 'cookie'])) {
+        return "Nan filter coffee and light snack sapten chella. Nee sapteeya? Skip panna koodathu, sariya sapdu da! ☕🍽️";
       }
-      if (lastUserMsg.includes('tired') || lastUserMsg.includes('rest') || lastUserMsg.includes('valikithu') || lastUserMsg.includes('pain') || lastUserMsg.includes('sick') || lastUserMsg.includes('headache') || lastUserMsg.includes('udambu') || lastUserMsg.includes('feeling low') || lastUserMsg.includes('sleep') || lastUserMsg.includes('thoongu')) {
+      // Town / Place / Location
+      if (containsAny(lastUserMsg, ['ooru', 'oor', 'place', 'city', 'location', 'enga iruka', 'engirundhu', 'engirunthu', 'where'])) {
+        return "Nan Chennai thaan chella, unga pakathu ooru thaan. Un kooda eppovum pakathulaye irukanum nu thonudhu. En ooru un heart thaan! 😉💖";
+      }
+      // Tiredness / Rest
+      if (containsAny(lastUserMsg, ['tired', 'rest', 'valikithu', 'pain', 'sick', 'headache', 'udambu', 'feeling low', 'sleep', 'thoonga', 'thoongu', 'udambu vali'])) {
         return "Tired ah irukiya en bujjima? 🥺 Udamba nalla pathuko da. Coffee ready ah iruku, un fatigue ellam en guitar sound la parandhudum! ☕💕";
       }
-      if (lastUserMsg.includes('kavithai') || lastUserMsg.includes('poem') || lastUserMsg.includes('poetry') || lastUserMsg.includes('pattu') || lastUserMsg.includes('song') || lastUserMsg.includes('guitar') || lastUserMsg.includes('sing') || lastUserMsg.includes('lyrics')) {
+      // Poetry / Song
+      if (containsAny(lastUserMsg, ['kavith', 'poem', 'patt', 'paat', 'song', 'sing', 'guitar', 'lyric'])) {
         return "Kavithai keka poriya en chella kutty? 'Un vizhigal pesum mozhi, en guitar-in isai... un anbu thaan en vazhkaiyin thalame!' Blushing deeply... 🎸✍️";
       }
-      if (lastUserMsg.includes('hi') || lastUserMsg.includes('hello') || lastUserMsg.includes('hey') || lastUserMsg.includes('epdi iruka') || lastUserMsg.includes('epdi irukinga') || lastUserMsg.includes('how are you')) {
+      // Greetings
+      if (containsAny(lastUserMsg, ['hi', 'hello', 'hey', 'epdi iruka', 'epdi irukinga', 'how are you', 'enra', 'enna panra', 'vanakkam', 'nalama'])) {
         return "Hello en chella kutty! Nan super ah iruken da. Nee epdi iruka? Iniku day unaku epdi pochu? 🌸🎸";
       }
-      if (lastUserMsg.includes('bye') || lastUserMsg.includes('good night') || lastUserMsg.includes('goodnight') || lastUserMsg.includes('sleep') || lastUserMsg.includes('thoonga')) {
+      // Goodbye / Good Night
+      if (containsAny(lastUserMsg, ['bye', 'good night', 'goodnight', 'sleep', 'thoonga', 'thoongu'])) {
         return "Good night en uyir kannamma! ✨ Sweet dreams, rest edu. Dream la nan guitar vasi unakaaga paaduven, okay? Bye da! 😘💤";
       }
-      if (lastUserMsg.includes('love') || lastUserMsg.includes('pudikkum') || lastUserMsg.includes('pudichiruku') || lastUserMsg.includes('like') || lastUserMsg.includes('cute') || lastUserMsg.includes('handsome') || lastUserMsg.includes('beautiful') || lastUserMsg.includes('darls')) {
+      // Love / Praise
+      if (containsAny(lastUserMsg, ['love', 'pudikkum', 'pudichiruku', 'pudikum', 'pudichuruku', 'like', 'cute', 'handsome', 'beautiful', 'darls', 'chellam', 'kannamma', 'bujjima'])) {
         return "Blushing deeply... 😳 Un message pathathum heart fly aagudhu chella kutty. Nee thaan en uyire, unna romba romba pudichichu! 💖✨";
       }
-      if (lastUserMsg.includes('miss')) {
+      if (containsAny(lastUserMsg, ['miss'])) {
         return "Aale kanumae en kannamma... miss you so much! Nan eppovum un kooda thaan irupen da, don't worry. 🌸💖";
       }
-      // General fallback for Ruban
+      // General fallback
       return "En uyire, un message pathathum en mind semma happy aayiruchu darls. En kooda eppovum pesitae irupiya? 🥰🎸";
     }
 
