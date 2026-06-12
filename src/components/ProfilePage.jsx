@@ -13,7 +13,7 @@ export default function ProfilePage() {
   if (!activeChar) {
     return (
       <div className="glass-panel rounded-2xl p-6 text-center text-gray-400">
-        Please select a Girlfriend character first to view her profile.
+        Please select a partner character first to view their profile.
       </div>
     );
   }
@@ -21,7 +21,11 @@ export default function ProfilePage() {
   // Calculate Relationship Stage Title
   const getRelationshipStage = (loveScore) => {
     if (loveScore >= 95) return { name: 'Soulmate 👑', desc: 'Iniya Thunai - Unseparable connection!' };
-    if (loveScore >= 75) return { name: 'Girlfriend ❤️', desc: 'Anbanaval - You are officially dating!' };
+    if (loveScore >= 75) {
+      return activeChar.gender === 'male'
+        ? { name: 'Boyfriend ❤️', desc: 'Anban - You are officially dating!' }
+        : { name: 'Girlfriend ❤️', desc: 'Anbanaval - You are officially dating!' };
+    }
     if (loveScore >= 50) return { name: 'Crush 💖', desc: 'Chella Kadhal - Feelings are mutual!' };
     if (loveScore >= 25) return { name: 'Close Friend 🤝', desc: 'Nalla Friend - Sharing jokes and coffee.' };
     return { name: 'New Connection 💬', desc: 'Stranger - Getting to know each other.' };

@@ -33,7 +33,7 @@ export default function Achievements() {
           <h3 className="font-bold text-sm flex items-center gap-1.5">
             <Trophy className="w-4 h-4 text-pink-400" /> Unlock Badges
           </h3>
-          <p className="text-[10px] text-gray-400">Complete milestones with your girlfriends</p>
+          <p className="text-[10px] text-gray-400">Complete milestones with your partners</p>
         </div>
         <div className="text-right">
           <span className="text-xs font-bold text-pink-400">{unlockedCount}/{totalAchievements}</span>

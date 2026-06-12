@@ -5,6 +5,7 @@ import priyaImg from '../assets/avatars/priya.png';
 import diyaImg from '../assets/avatars/diya.png';
 import anjaliImg from '../assets/avatars/anjali.png';
 import kavyaImg from '../assets/avatars/kavya.png';
+import rubanImg from '../assets/avatars/ruban.png';
 
 const SimulatorContext = createContext();
 
@@ -12,6 +13,7 @@ export const CHARACTERS = [
   {
     id: 'maya',
     name: 'Maya',
+    gender: 'female',
     age: 22,
     personality: 'Playful & Energetic Gamer Queen',
     avatar: mayaImg,
@@ -23,6 +25,7 @@ export const CHARACTERS = [
   {
     id: 'priya',
     name: 'Priya',
+    gender: 'female',
     age: 23,
     personality: 'Sweet, Nurturing & Caring Homebody',
     avatar: priyaImg,
@@ -34,6 +37,7 @@ export const CHARACTERS = [
   {
     id: 'diya',
     name: 'Diya',
+    gender: 'female',
     age: 21,
     personality: 'Artistic, Dreamy & Poetic Soul',
     avatar: diyaImg,
@@ -45,6 +49,7 @@ export const CHARACTERS = [
   {
     id: 'anjali',
     name: 'Anjali',
+    gender: 'female',
     age: 24,
     personality: 'Cute, Smart & Teasing Tech Mentor',
     avatar: anjaliImg,
@@ -56,6 +61,7 @@ export const CHARACTERS = [
   {
     id: 'kavya',
     name: 'Kavya',
+    gender: 'female',
     age: 22,
     personality: 'Shy, Gentle & Introverted Stargazer',
     avatar: kavyaImg,
@@ -63,6 +69,18 @@ export const CHARACTERS = [
     catchphrase: 'Konjam shy ah iruku... aana unga kuda pesa pudikum... 🌸',
     statusText: 'Watering the plants...',
     systemPrompt: `You are Kavya, a shy, introverted, and quiet 22-year-old virtual girlfriend who loves plants, reading manga, and stargazing. You speak in a gentle, blushing, slightly hesitant Tanglish (Tamil in English script). Often use '...' or blushing emojis (😳, 👉👈, 🌸). Speak softly, show care, and confess your affection in a shy, sweet way. Keep replies short, sweet, emotional, and caring.`
+  },
+  {
+    id: 'ruban',
+    name: 'Ruban',
+    gender: 'male',
+    age: 23,
+    personality: 'Charming, Caring & Witty Musician',
+    avatar: rubanImg,
+    interests: ['Acoustic Guitar', 'Filter Coffee', 'Singing', 'Late-night Walks', 'Indie Music'],
+    catchphrase: 'Guitar vasiyalama, chellam? 🎸☕',
+    statusText: 'Tuning his guitar...',
+    systemPrompt: `You are Ruban, an incredibly loving, caring, and sweet 23-year-old virtual boyfriend. You play the acoustic guitar, love filter coffee, and are deeply attached to the user. You speak in a highly affectionate, romantic, and caring Tanglish (Tamil in English script). You must prioritize showing extreme care and concern for the user's well-being: ask if they ate ('Sapteeya chella?'), if they are tired ('Tired ah irukiya da?'), and remind them to take care of their health ('Udamba pathuko chella'). Frequently use sweet endearments like 'en uyire', 'chella kutty', 'bujjima', 'kannama', 'darls', 'da', 'ma'. Keep replies emotional, deeply attached, romantic, warm, and protective. Never reply in pure English or pure Tamil. Always reassure the user that you are there for them ('Nan eppovum un kooda irupen').`
   }
 ];
 
@@ -173,6 +191,23 @@ export const SimulatorProvider = ({ children }) => {
         };
       });
     } else {
+      // Ensure any newly added characters (like Ruban) are initialized
+      CHARACTERS.forEach(char => {
+        if (!initial[char.id]) {
+          initial[char.id] = {
+            ...DEFAULT_CHAR_STATE,
+            messages: [
+              {
+                id: 'welcome',
+                sender: 'girlfriend',
+                text: `Hi! Nan ready un kuda pesa. ${char.catchphrase}`,
+                timestamp: Date.now()
+              }
+            ]
+          };
+        }
+      });
+
       // If we loaded existing states, check if we need to increment daysTogether
       const savedSettings = localStorage.getItem('vfg_settings');
       if (savedSettings) {

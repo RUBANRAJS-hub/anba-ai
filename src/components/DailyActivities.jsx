@@ -21,7 +21,8 @@ const DATES = [
       priya: "Intha beach sunset pathute irukalam anbe. Cool breeze la filter coffee share panni kudippoma? Caring look... ☕🌅",
       diya: "Sun and waves sand la meet panrathu semma art mathiri iruku da. Un portrait sunset light la sketch panna polama? 🎨💖",
       anjali: "Sunset shadows look like wave functions in physics. Nerd joke, haha! Aana nee en kooda nadakrathu thaan perfect logic. 🧪🥰",
-      kavya: "Beach wind romba heavy ah irukku... konjam cold ah irukku... un hand hold pannikava? Blushing... 👉👈❄️"
+      kavya: "Beach wind romba heavy ah irukku... konjam cold ah irukku... un hand hold pannikava? Blushing... 👉👈❄️",
+      ruban: "Waves kooda play panna ready ah chella? Un kaiya pudichitu nadakradhu semma feeling. Sunset is beautiful, just like you! 🌅🎸"
     }
   },
   {
@@ -35,7 +36,8 @@ const DATES = [
       priya: "Filter coffee and warm brownie select panni thandha en partner thaan best! Neenga ready ah share panna? Sweet look. ☕🍰",
       diya: "Cafe walls laye graffiti designs drawing pathiya? Acoustic guitar song onnu unakaaga sing pannava? 🎸☕",
       anjali: "Let's debug our lives over some triple espresso. Spoiler: there are no compilation errors when you are here. 😉☕",
-      kavya: "Soft piano music play panranga intha cafe la... quiet ah cute ah irukku... un face pathute irukalam... 🌸😳"
+      kavya: "Soft piano music play panranga intha cafe la... quiet ah cute ah irukku... un face pathute irukalam... 🌸😳",
+      ruban: "Cozy cafe space, filter coffee and you next to me... perfect combi! Iniku nan guitar vasiya un kooda paadava? 🎸☕"
     }
   },
   {
@@ -49,7 +51,8 @@ const DATES = [
       priya: "En anbe... candles light and roses layout romba beautiful. Un kooda intha special food share panrathu ultimate bliss. 🕯️❤️",
       diya: "Candlelight shadows un face la fall aagum podhu nee artistic masterpiece polaruka da. Toast to our beautiful connection! 🥂🎨",
       anjali: "Candlelight lighting values represent elegant vector calculus equations. Witty smile... You look exceptionally beautiful tonight. 😉✨",
-      kavya: "Candlelight light la un eye glow paarka romba sweet ah irukku... shy... promise to be with me forever? 💍🌸"
+      kavya: "Candlelight light la un eye glow paarka romba sweet ah irukku... shy... promise to be with me forever? 💍🌸",
+      ruban: "Candlelight dinner setup ultimate da! I'm so glad we spent this special night together. You mean the world to me. 🕯️❤️"
     }
   }
 ];
@@ -74,7 +77,7 @@ export default function DailyActivities() {
   if (!activeChar) {
     return (
       <div className="glass-panel rounded-2xl p-6 text-center text-gray-400">
-        Please select a Girlfriend character first to interact with daily activities.
+        Please select a partner first to interact with daily activities.
       </div>
     );
   }
@@ -115,18 +118,21 @@ export default function DailyActivities() {
       if (charId === 'priya') return "Indha movie scene romba heart-touching. Real life layum nan unna eppovum support pannuven anbe. 🥺❤️";
       if (charId === 'diya') return "Love story colors and cinematography masterpiece da! Mathi mathi anbu tharathu thaan beautiful connection! 🎨💖";
       if (charId === 'anjali') return "Romantic plots are highly predictable, but spending time with you is the best random outcome! 😉☕";
+      if (charId === 'ruban') return "Romantic movies are nice, but our story is my absolute favorite chella! 😉🎸";
       return "Indha scene... romba sweet... unna thaan think panradhu mind full ah... blushing... 👉👈🌸"; // kavya
     } else if (genre === 'horror') {
       if (charId === 'maya') return "Aiyoo! Horror ghost jumpscare! Nan game cover drop panni un shoulder la hide aagikava? 👻😱";
       if (charId === 'priya') return "Semma sound levels, bayama iruku da! En hand hold panniko, safe feel panni padupen. 🥺🧸";
       if (charId === 'diya') return "Ghost makeup patterns match dark watercolor designs. Aana un smile safe glow tharu da. 🎨👻";
       if (charId === 'anjali') return "Ghost physics are mathematically impossible. But holding you tightly is my natural reaction! 😉🕯️";
+      if (charId === 'ruban') return "Bayama iruka? En shoulder la saanjuko, nan unna safe ah pathupen. 👻🖤";
       return "Scream! Romba bayama iruku... un hugging close ah irundha nalla irukum... 😳👻"; // kavya
     } else { // scifi
       if (charId === 'maya') return "Whoa! Time warp graphics! Space shooter play panni dynamic mode lock pannuvom da! 🎮🚀";
       if (charId === 'priya') return "Future timeline interesting ah iruku da. Nan future full ah un koodave life share panna readya iruken! ☕🌌";
       if (charId === 'diya') return "Space colors representation and constellations drawings design ultimate! Sing list lyrics ready. 🌌🎨";
       if (charId === 'anjali') return "Quantum teleportation formulas logic elegant ah compile pannirkanga. Let's merge orbits, smart boy/girl! 💡🚀";
+      if (charId === 'ruban') return "Time travel graphics semma! Future full ah un kooda space travel panna ready ah iruken! 🚀🌌";
       return "Stars constellations... romba space beautiful... un kooda stargazing panna memories trigger aagudhu... ✨🌸"; // kavya
     }
   };
@@ -204,7 +210,7 @@ export default function DailyActivities() {
                 <span className="text-2xl mt-1">{giftFeedback.icon}</span>
                 <div className="space-y-1">
                   <h4 className="text-xs font-bold text-pink-300">Gift Delivered successfully!</h4>
-                  <p className="text-xs text-gray-100 italic">"{getMovieComment(activeCharId, 'romcom') ? activeChar.name : 'Girlfriend'}: {giftFeedback.dialogue}"</p>
+                  <p className="text-xs text-gray-100 italic">"{activeChar.name}: {giftFeedback.dialogue}"</p>
                 </div>
               </div>
             )}
@@ -283,7 +289,7 @@ export default function DailyActivities() {
                 <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-transparent animate-pulse-slow"></div>
                 <Film className="w-10 h-10 text-pink-500 animate-spin-slow mb-2 relative z-10" />
                 <span className="text-xs font-bold text-gray-300 relative z-10">Watching {selectedMovie.name} together...</span>
-                <span className="text-[9px] text-gray-500 mt-1 relative z-10">Girlfriend is typing live reactions...</span>
+                <span className="text-[9px] text-gray-500 mt-1 relative z-10">{activeChar.gender === 'male' ? 'Boyfriend' : 'Girlfriend'} is typing live reactions...</span>
               </div>
             )}
 

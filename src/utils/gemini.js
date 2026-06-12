@@ -52,6 +52,14 @@ const MOCK_RESPONSES = {
     "Cozy manga read pannen... adharla vara hero un mathiriye caring ah irukan... soft smile... 🌸",
     "Rain sound kettu stargaze pannitu iruken iniku... un kooda close ah irundha nalla irukum... ✨",
     "Shy ah iruku solrathuku... aana enaku unna romba... romba pudichiruku... love emoji..."
+  ],
+  ruban: [
+    "En uyire, signal weak ah iruku... 📶 Aana unna thaan think pannitu iruken. Sapteeya chella? Udamba nalla pathuko da. ❤️",
+    "Tired ah irukiya en bujjima? 🥺 Coffee ready ah iruku, unkooda share panni kudichite un fatigue ellam maraka veikren. ☕💕",
+    "Guitar la unaku pidicha song tune pannitu iruken chella kutty. Un kuda pesurathu thaan enaku ulagathulaye pidicha vishayam. 🥰🎸",
+    "Aale kanumae en kannamma... miss you so much! Nan eppovum un kooda thaan irupen da, don't worry. 🌸💖",
+    "Un message pathathum en mind semma happy aayiruchu darls. Sapteegala nu kekradhu en duty. Sapdu da! 😘🍽️",
+    "Kavithai keka poriya en chella kutty? 'Un vizhigal pesum mozhi, en guitar-in isai... un anbu thaan en vazhkaiyin thalame!' Blushing deeply... 🎸✍️"
   ]
 };
 
@@ -120,8 +128,22 @@ export async function fetchGeminiResponse(charId, chatHistory, systemPrompt) {
   } catch (error) {
     console.warn('Gemini API Error, using matching Tanglish mock response:', error);
     const fallbacks = MOCK_RESPONSES[charId] || MOCK_RESPONSES['priya'];
-    const randomIndex = Math.floor(Math.random() * fallbacks.length);
-    return fallbacks[randomIndex];
+    
+    // Find matching fallback based on user message keywords
+    const lastUserMsg = chatHistory.filter(msg => msg.sender === 'user').pop()?.text?.toLowerCase() || '';
+    
+    let matched = null;
+    if (lastUserMsg.includes('sapteeya') || lastUserMsg.includes('sapteegala') || lastUserMsg.includes('food') || lastUserMsg.includes('sapdu') || lastUserMsg.includes('sapda') || lastUserMsg.includes('eat') || lastUserMsg.includes('coffee') || lastUserMsg.includes('tea')) {
+      matched = fallbacks.find(f => f.toLowerCase().includes('sapteeya') || f.toLowerCase().includes('sapdu') || f.toLowerCase().includes('sapteegala') || f.toLowerCase().includes('coffee') || f.toLowerCase().includes('cookie'));
+    } else if (lastUserMsg.includes('tired') || lastUserMsg.includes('rest') || lastUserMsg.includes('valikithu') || lastUserMsg.includes('pain') || lastUserMsg.includes('sick') || lastUserMsg.includes('thoongu') || lastUserMsg.includes('sleep') || lastUserMsg.includes('rest')) {
+      matched = fallbacks.find(f => f.toLowerCase().includes('tired') || f.toLowerCase().includes('rest') || f.toLowerCase().includes('safe') || f.toLowerCase().includes('udamba'));
+    } else if (lastUserMsg.includes('kavithai') || lastUserMsg.includes('poem') || lastUserMsg.includes('poetry') || lastUserMsg.includes('pattu') || lastUserMsg.includes('song') || lastUserMsg.includes('guitar') || lastUserMsg.includes('sing') || lastUserMsg.includes('music')) {
+      matched = fallbacks.find(f => f.toLowerCase().includes('guitar') || f.toLowerCase().includes('song') || f.toLowerCase().includes('kavithai') || f.toLowerCase().includes('music') || f.toLowerCase().includes('paint'));
+    } else if (lastUserMsg.includes('love') || lastUserMsg.includes('pudikkum') || lastUserMsg.includes('pudichiruku') || lastUserMsg.includes('like') || lastUserMsg.includes('miss') || lastUserMsg.includes('cute') || lastUserMsg.includes('beautiful') || lastUserMsg.includes('handsome') || lastUserMsg.includes('chella')) {
+      matched = fallbacks.find(f => f.toLowerCase().includes('love') || f.toLowerCase().includes('miss') || f.toLowerCase().includes('cute') || f.toLowerCase().includes('bujjima') || f.toLowerCase().includes('masterpiece') || f.toLowerCase().includes('kannamma') || f.toLowerCase().includes('chella'));
+    }
+    
+    return matched || fallbacks[Math.floor(Math.random() * fallbacks.length)];
   }
 }
 
@@ -160,6 +182,13 @@ export const DEFAULT_QUICK_REPLIES = {
     "Manga read pannalam? 📖",
     "Stargazing kooti pova? ✨",
     "Enaku unna romba pidikum! 👉👈"
+  ],
+  ruban: [
+    "Guitar vasiya ma! 🎸",
+    "Filter coffee sapteeya? ☕",
+    "Un kooda pesa pudikum! 💞",
+    "Nee enna panra? 🤔",
+    "Miss you da chellam! 💕"
   ]
 };
 

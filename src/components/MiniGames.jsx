@@ -11,7 +11,8 @@ const QUIZ_QUESTIONS = [
       { text: "Baking fresh cookies & reading ☕", fit: "priya" },
       { text: "Watercolor painting by the beach 🎨", fit: "diya" },
       { text: "Espresso & fixing code compile bugs 💻", fit: "anjali" },
-      { text: "Quiet gardening and stargazing 🌸", fit: "kavya" }
+      { text: "Quiet gardening and stargazing 🌸", fit: "kavya" },
+      { text: "Playing acoustic guitar & drinking filter coffee 🎸☕", fit: "ruban" }
     ]
   },
   {
@@ -22,29 +23,32 @@ const QUIZ_QUESTIONS = [
       { text: "Cooking healthy food & asking 'Sapteeya?'", fit: "priya" },
       { text: "Singing acoustic melodies with guitar", fit: "diya" },
       { text: "Teasing them gently with clever brain jokes", fit: "anjali" },
-      { text: "Giving handmade origami or flowers silently", fit: "kavya" }
+      { text: "Giving handmade origami or flowers silently", fit: "kavya" },
+      { text: "Writing a cute song & playing guitar for them 🎶", fit: "ruban" }
     ]
   },
   {
     id: 3,
-    q: "If she is upset, what is your approach?",
+    q: "If your partner is upset, what is your approach?",
     options: [
       { text: "Carry them in multiplayer matches to win! 🏆", fit: "maya" },
-      { text: "Bring hot tea & cozy blanket to listen to her", fit: "priya" },
-      { text: "Draw a cute cartoon sketch to cheer her up", fit: "diya" },
+      { text: "Bring hot tea & cozy blanket to listen to them", fit: "priya" },
+      { text: "Draw a cute cartoon sketch to cheer them up", fit: "diya" },
       { text: "Explain logically how we can debug the issue", fit: "anjali" },
-      { text: "Sit together quietly in the backyard garden", fit: "kavya" }
+      { text: "Sit together quietly in the backyard garden", fit: "kavya" },
+      { text: "Singing their favorite song to make them smile 🎙️", fit: "ruban" }
     ]
   },
   {
     id: 4,
-    q: "What is your dream future with her?",
+    q: "What is your dream future with your partner?",
     options: [
       { text: "Building an awesome pro-gaming rig setup together", fit: "maya" },
       { text: "A peaceful cottage house with kitchen & library", fit: "priya" },
       { text: "Visiting historic art museums in Europe", fit: "diya" },
       { text: "Launching a tech startup company in Chennai", fit: "anjali" },
-      { text: "Stargazing from a rooftop garden every night", fit: "kavya" }
+      { text: "Stargazing from a rooftop garden every night", fit: "kavya" },
+      { text: "Performing in a music concert together with coffee breaks ☕🎵", fit: "ruban" }
     ]
   }
 ];
@@ -73,7 +77,7 @@ export default function MiniGames() {
   if (!activeChar) {
     return (
       <div className="glass-panel rounded-2xl p-6 text-center text-gray-400">
-        Please select a Girlfriend character first to play mini-games.
+        Please select a companion first to play mini-games.
       </div>
     );
   }
@@ -257,7 +261,7 @@ export default function MiniGames() {
         <div className="space-y-4 flex-grow flex flex-col justify-center">
           <div className="text-center py-2 space-y-1">
             <Gamepad2 className="w-8 h-8 text-pink-500 mx-auto animate-bounce" />
-            <h3 className="font-bold text-sm">Girlfriend Mini-Games</h3>
+            <h3 className="font-bold text-sm">Companion Mini-Games</h3>
             <p className="text-[10px] text-gray-400">Play games to build stats and increase friendship levels!</p>
           </div>
 
