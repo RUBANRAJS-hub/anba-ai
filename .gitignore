@@ -28,3 +28,5 @@ dist-ssr
 
 # Test scripts containing credentials
 test_gemini.js
+
+.vercel

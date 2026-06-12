@@ -96,6 +96,9 @@ async function callGemini(contents, systemInstruction, responseMimeType = 'text/
         }
       } else {
         console.warn(`Gemini API returned error code ${response.status} for model ${model}`);
+        if (response.status === 429 || response.status === 403 || response.status === 401) {
+          throw new Error(`Gemini API Error: Status ${response.status}`);
+        }
       }
     } catch (err) {
       console.warn(`Failed to contact Gemini API for model ${model}:`, err);
