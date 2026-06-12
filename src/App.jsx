@@ -61,7 +61,7 @@ function AppContent() {
   ];
 
   return (
-    <div className={`min-h-screen flex flex-col font-sans select-none overflow-x-hidden relative ${bgClass} transition-colors duration-500`}>
+    <div className={`h-[100dvh] flex flex-col font-sans select-none overflow-hidden relative ${bgClass} transition-colors duration-500`}>
       {/* Decorative Glow elements */}
       {!isLight && (
         <>
@@ -71,7 +71,7 @@ function AppContent() {
       )}
 
       {/* Main Core Container */}
-      <div className="flex-grow flex max-w-7xl w-full mx-auto p-4 md:p-6 gap-6 items-stretch self-center">
+      <div className="flex-grow flex flex-col md:flex-row max-w-7xl w-full mx-auto p-3 md:p-6 gap-4 md:gap-6 items-stretch self-center overflow-hidden pb-16 md:pb-0 h-[calc(100%-4rem)] md:h-full">
         
         {/* SIDE BAR PANEL (Desktop Only) */}
         <aside className={`hidden md:flex flex-col justify-between w-64 p-5 rounded-3xl border backdrop-blur-md z-10 ${cardBgClass}`}>
