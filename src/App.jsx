@@ -71,7 +71,7 @@ function AppContent() {
       )}
 
       {/* Main Core Container */}
-      <div className="flex-grow flex flex-col md:flex-row max-w-7xl w-full mx-auto p-3 md:p-6 gap-4 md:gap-6 items-stretch self-center overflow-hidden pb-16 md:pb-0 h-[calc(100%-4rem)] md:h-full">
+      <div className="flex-1 flex flex-col md:flex-row max-w-7xl w-full mx-auto p-3 md:p-6 gap-4 md:gap-6 items-stretch self-center overflow-hidden">
         
         {/* SIDE BAR PANEL (Desktop Only) */}
         <aside className={`hidden md:flex flex-col justify-between w-64 p-5 rounded-3xl border backdrop-blur-md z-10 ${cardBgClass}`}>
@@ -215,7 +215,7 @@ function AppContent() {
       </div>
 
       {/* MOBILE BOTTOM NAVIGATION BAR (Mobile Only) */}
-      <footer className={`md:hidden fixed bottom-0 left-0 right-0 py-2 border-t z-40 backdrop-blur-md flex items-center justify-around select-none ${cardBgClass}`}>
+      <footer className={`md:hidden shrink-0 py-3 border-t z-40 backdrop-blur-md flex items-center justify-around select-none ${cardBgClass}`}>
         {navItems.map(item => (
           <button
             key={item.id}
