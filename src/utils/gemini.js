@@ -64,56 +64,63 @@ const MOCK_RESPONSES = {
 };
 
 async function callGemini(contents, systemInstruction, responseMimeType = 'text/plain') {
-  const models = ['gemini-2.5-flash-lite', 'gemini-flash-lite-latest', 'gemini-3.5-flash', 'gemini-2.5-flash'];
+  const models = ['gemini-3.5-flash', 'gemini-2.5-flash'];
   let lastError = null;
 
-  for (const model of models) {
-    try {
-      const key = getApiKey();
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
-      const body = {
-        contents,
-        systemInstruction: {
-          parts: [{ text: systemInstruction }]
-        },
-        generationConfig: {
-          temperature: 0.8,
-          maxOutputTokens: 256
-        }
-      };
+  const primaryKey = getApiKey();
+  const keysToTry = [primaryKey];
+  if (primaryKey !== DEFAULT_API_KEY && DEFAULT_API_KEY) {
+    keysToTry.push(DEFAULT_API_KEY);
+  }
 
-      if (responseMimeType === 'application/json') {
-        body.generationConfig = {
-          responseMimeType: 'application/json',
-          temperature: 0.7,
-          maxOutputTokens: 150
+  for (const key of keysToTry) {
+    for (const model of models) {
+      try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
+        const body = {
+          contents,
+          systemInstruction: {
+            parts: [{ text: systemInstruction }]
+          },
+          generationConfig: {
+            temperature: 0.8,
+            maxOutputTokens: 256
+          }
         };
-      }
 
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
+        if (responseMimeType === 'application/json') {
+          body.generationConfig = {
+            responseMimeType: 'application/json',
+            temperature: 0.7,
+            maxOutputTokens: 150
+          };
+        }
 
-      if (response.ok) {
-        const data = await response.json();
-        const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (text) {
-          return text.trim();
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (text) {
+            return text.trim();
+          }
+        } else {
+          console.warn(`Gemini API returned error code ${response.status} for model ${model}`);
+          if (response.status === 429 || response.status === 403 || response.status === 401) {
+            throw new Error(`Gemini API Error: Status ${response.status}`);
+          }
         }
-      } else {
-        console.warn(`Gemini API returned error code ${response.status} for model ${model}`);
-        if (response.status === 429 || response.status === 403 || response.status === 401) {
-          throw new Error(`Gemini API Error: Status ${response.status}`);
-        }
+      } catch (err) {
+        console.warn(`Failed to contact Gemini API for model ${model} with key:`, err);
+        lastError = err;
       }
-    } catch (err) {
-      console.warn(`Failed to contact Gemini API for model ${model}:`, err);
-      lastError = err;
     }
   }
-  throw lastError || new Error('All models failed to respond');
+  throw lastError || new Error('All models and keys failed to respond');
 }
 
 export async function fetchGeminiResponse(charId, chatHistory, systemPrompt) {
@@ -134,40 +141,31 @@ export async function fetchGeminiResponse(charId, chatHistory, systemPrompt) {
     
     // Ruban specialized context-aware response matching
     if (charId === 'ruban') {
-      const containsAny = (str, keywords) => keywords.some(k => str.includes(k));
-
-      // Food / Drink
-      if (containsAny(lastUserMsg, ['sapt', 'sapd', 'sapth', 'sapu', 'food', 'eat', 'dinner', 'lunch', 'breakfast', 'coffee', 'tea', 'biscuit', 'cookie'])) {
-        return "Nan filter coffee and light snack sapten chella. Nee sapteeya? Skip panna koodathu, sariya sapdu da! ☕🍽️";
+      if (lastUserMsg.includes('sapteeya') || lastUserMsg.includes('sapteegala') || lastUserMsg.includes('saptiya') || lastUserMsg.includes('saptingala') || lastUserMsg.includes('saptha') || lastUserMsg.includes('food') || lastUserMsg.includes('sapdu') || lastUserMsg.includes('sapda') || lastUserMsg.includes('eat') || lastUserMsg.includes('dinner') || lastUserMsg.includes('lunch') || lastUserMsg.includes('biriyani') || lastUserMsg.includes('coffee') || lastUserMsg.includes('tea')) {
+        return "Nan filter coffee and light snack sapten chella. Nee sapteeya? Skip panna koodathu, sariya sapdanum da! ☕🍽️";
       }
-      // Town / Place / Location
-      if (containsAny(lastUserMsg, ['ooru', 'oor', 'place', 'city', 'location', 'enga iruka', 'engirundhu', 'engirunthu', 'where'])) {
-        return "Nan Chennai thaan chella, unga pakathu ooru thaan. Un kooda eppovum pakathulaye irukanum nu thonudhu. En ooru un heart thaan! 😉💖";
+      if (lastUserMsg.includes('ooru') || lastUserMsg.includes('place') || lastUserMsg.includes('town') || lastUserMsg.includes('home') || lastUserMsg.includes('veedu') || lastUserMsg.includes('location') || lastUserMsg.includes('enga iruka') || lastUserMsg.includes('address') || lastUserMsg.includes('live')) {
+        return "Nan Chennai la iruken chella kutty. Un kuda time spend panna ododi varuven! Nee enga iruka? 🏡🌸";
       }
-      // Tiredness / Rest
-      if (containsAny(lastUserMsg, ['tired', 'rest', 'valikithu', 'pain', 'sick', 'headache', 'udambu', 'feeling low', 'sleep', 'thoonga', 'thoongu', 'udambu vali'])) {
+      if (lastUserMsg.includes('tired') || lastUserMsg.includes('rest') || lastUserMsg.includes('valikithu') || lastUserMsg.includes('pain') || lastUserMsg.includes('sick') || lastUserMsg.includes('headache') || lastUserMsg.includes('udambu') || lastUserMsg.includes('feeling low') || lastUserMsg.includes('sleep') || lastUserMsg.includes('thoongu') || lastUserMsg.includes('thoonguren')) {
         return "Tired ah irukiya en bujjima? 🥺 Udamba nalla pathuko da. Coffee ready ah iruku, un fatigue ellam en guitar sound la parandhudum! ☕💕";
       }
-      // Poetry / Song
-      if (containsAny(lastUserMsg, ['kavith', 'poem', 'patt', 'paat', 'song', 'sing', 'guitar', 'lyric'])) {
+      if (lastUserMsg.includes('kavithai') || lastUserMsg.includes('poem') || lastUserMsg.includes('poetry') || lastUserMsg.includes('pattu') || lastUserMsg.includes('song') || lastUserMsg.includes('guitar') || lastUserMsg.includes('sing') || lastUserMsg.includes('lyrics')) {
         return "Kavithai keka poriya en chella kutty? 'Un vizhigal pesum mozhi, en guitar-in isai... un anbu thaan en vazhkaiyin thalame!' Blushing deeply... 🎸✍️";
       }
-      // Greetings
-      if (containsAny(lastUserMsg, ['hi', 'hello', 'hey', 'epdi iruka', 'epdi irukinga', 'how are you', 'enra', 'enna panra', 'vanakkam', 'nalama'])) {
+      if (lastUserMsg.includes('hi') || lastUserMsg.includes('hello') || lastUserMsg.includes('hey') || lastUserMsg.includes('epdi iruka') || lastUserMsg.includes('epdi irukinga') || lastUserMsg.includes('how are you') || lastUserMsg.includes('nallama')) {
         return "Hello en chella kutty! Nan super ah iruken da. Nee epdi iruka? Iniku day unaku epdi pochu? 🌸🎸";
       }
-      // Goodbye / Good Night
-      if (containsAny(lastUserMsg, ['bye', 'good night', 'goodnight', 'sleep', 'thoonga', 'thoongu'])) {
+      if (lastUserMsg.includes('bye') || lastUserMsg.includes('good night') || lastUserMsg.includes('goodnight') || lastUserMsg.includes('sleep') || lastUserMsg.includes('thoonga') || lastUserMsg.includes('tata')) {
         return "Good night en uyir kannamma! ✨ Sweet dreams, rest edu. Dream la nan guitar vasi unakaaga paaduven, okay? Bye da! 😘💤";
       }
-      // Love / Praise
-      if (containsAny(lastUserMsg, ['love', 'pudikkum', 'pudichiruku', 'pudikum', 'pudichuruku', 'like', 'cute', 'handsome', 'beautiful', 'darls', 'chellam', 'kannamma', 'bujjima'])) {
+      if (lastUserMsg.includes('love') || lastUserMsg.includes('pudikkum') || lastUserMsg.includes('pudichiruku') || lastUserMsg.includes('like') || lastUserMsg.includes('cute') || lastUserMsg.includes('handsome') || lastUserMsg.includes('beautiful') || lastUserMsg.includes('darls') || lastUserMsg.includes('bujjima') || lastUserMsg.includes('kannamma') || lastUserMsg.includes('chellam')) {
         return "Blushing deeply... 😳 Un message pathathum heart fly aagudhu chella kutty. Nee thaan en uyire, unna romba romba pudichichu! 💖✨";
       }
-      if (containsAny(lastUserMsg, ['miss'])) {
+      if (lastUserMsg.includes('miss')) {
         return "Aale kanumae en kannamma... miss you so much! Nan eppovum un kooda thaan irupen da, don't worry. 🌸💖";
       }
-      // General fallback
+      // General fallback for Ruban
       return "En uyire, un message pathathum en mind semma happy aayiruchu darls. En kooda eppovum pesitae irupiya? 🥰🎸";
     }
 
