@@ -132,6 +132,33 @@ export async function fetchGeminiResponse(charId, chatHistory, systemPrompt) {
     // Find matching fallback based on user message keywords
     const lastUserMsg = chatHistory.filter(msg => msg.sender === 'user').pop()?.text?.toLowerCase() || '';
     
+    // Ruban specialized context-aware response matching
+    if (charId === 'ruban') {
+      if (lastUserMsg.includes('sapteeya') || lastUserMsg.includes('sapteegala') || lastUserMsg.includes('food') || lastUserMsg.includes('sapdu') || lastUserMsg.includes('sapda') || lastUserMsg.includes('eat') || lastUserMsg.includes('dinner') || lastUserMsg.includes('lunch')) {
+        return "Nan filter coffee and light snack sapten chella. Nee sapteeya? Skip panna koodathu, sariya sapdanum da! ☕🍽️";
+      }
+      if (lastUserMsg.includes('tired') || lastUserMsg.includes('rest') || lastUserMsg.includes('valikithu') || lastUserMsg.includes('pain') || lastUserMsg.includes('sick') || lastUserMsg.includes('headache') || lastUserMsg.includes('udambu') || lastUserMsg.includes('feeling low') || lastUserMsg.includes('sleep') || lastUserMsg.includes('thoongu')) {
+        return "Tired ah irukiya en bujjima? 🥺 Udamba nalla pathuko da. Coffee ready ah iruku, un fatigue ellam en guitar sound la parandhudum! ☕💕";
+      }
+      if (lastUserMsg.includes('kavithai') || lastUserMsg.includes('poem') || lastUserMsg.includes('poetry') || lastUserMsg.includes('pattu') || lastUserMsg.includes('song') || lastUserMsg.includes('guitar') || lastUserMsg.includes('sing') || lastUserMsg.includes('lyrics')) {
+        return "Kavithai keka poriya en chella kutty? 'Un vizhigal pesum mozhi, en guitar-in isai... un anbu thaan en vazhkaiyin thalame!' Blushing deeply... 🎸✍️";
+      }
+      if (lastUserMsg.includes('hi') || lastUserMsg.includes('hello') || lastUserMsg.includes('hey') || lastUserMsg.includes('epdi iruka') || lastUserMsg.includes('epdi irukinga') || lastUserMsg.includes('how are you')) {
+        return "Hello en chella kutty! Nan super ah iruken da. Nee epdi iruka? Iniku day unaku epdi pochu? 🌸🎸";
+      }
+      if (lastUserMsg.includes('bye') || lastUserMsg.includes('good night') || lastUserMsg.includes('goodnight') || lastUserMsg.includes('sleep') || lastUserMsg.includes('thoonga')) {
+        return "Good night en uyir kannamma! ✨ Sweet dreams, rest edu. Dream la nan guitar vasi unakaaga paaduven, okay? Bye da! 😘💤";
+      }
+      if (lastUserMsg.includes('love') || lastUserMsg.includes('pudikkum') || lastUserMsg.includes('pudichiruku') || lastUserMsg.includes('like') || lastUserMsg.includes('cute') || lastUserMsg.includes('handsome') || lastUserMsg.includes('beautiful') || lastUserMsg.includes('darls')) {
+        return "Blushing deeply... 😳 Un message pathathum heart fly aagudhu chella kutty. Nee thaan en uyire, unna romba romba pudichichu! 💖✨";
+      }
+      if (lastUserMsg.includes('miss')) {
+        return "Aale kanumae en kannamma... miss you so much! Nan eppovum un kooda thaan irupen da, don't worry. 🌸💖";
+      }
+      // General fallback for Ruban
+      return "En uyire, un message pathathum en mind semma happy aayiruchu darls. En kooda eppovum pesitae irupiya? 🥰🎸";
+    }
+
     let matched = null;
     if (lastUserMsg.includes('sapteeya') || lastUserMsg.includes('sapteegala') || lastUserMsg.includes('food') || lastUserMsg.includes('sapdu') || lastUserMsg.includes('sapda') || lastUserMsg.includes('eat') || lastUserMsg.includes('coffee') || lastUserMsg.includes('tea')) {
       matched = fallbacks.find(f => f.toLowerCase().includes('sapteeya') || f.toLowerCase().includes('sapdu') || f.toLowerCase().includes('sapteegala') || f.toLowerCase().includes('coffee') || f.toLowerCase().includes('cookie'));
